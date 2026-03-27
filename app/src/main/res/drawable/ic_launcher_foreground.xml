@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Star/ticket icon representing a raffle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,20 L60,40 L82,40 L65,53 L72,74 L54,61 L36,74 L43,53 L26,40 L48,40 Z" />
+</vector>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Internal storage for saved raffle images -->
+    <files-path name="raffle_images" path="raffle_images/" />
+    <!-- Cache storage for temporarily shared images -->
+    <cache-path name="shared_images" path="shared/" />
+</paths>

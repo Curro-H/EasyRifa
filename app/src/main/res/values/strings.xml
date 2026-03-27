@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EasyRifa</string>
+
+    <!-- Home -->
+    <string name="home_title">Mis Sorteos</string>
+    <string name="home_empty">No tienes sorteos aún.\nPulsa + para crear uno.</string>
+    <string name="create_raffle">Crear sorteo</string>
+    <string name="delete_raffle">Eliminar sorteo</string>
+    <string name="delete_raffle_confirm">¿Eliminar este sorteo? Se perderán todos los participantes y el historial.</string>
+
+    <!-- Create / Edit Raffle -->
+    <string name="create_raffle_title">Nuevo sorteo</string>
+    <string name="edit_raffle_title">Editar sorteo</string>
+    <string name="raffle_name">Nombre del sorteo</string>
+    <string name="raffle_name_hint">Ej: Rifa de la tele</string>
+    <string name="raffle_min">Número mínimo</string>
+    <string name="raffle_max">Número máximo</string>
+    <string name="raffle_image">Foto del premio</string>
+    <string name="pick_image">Seleccionar imagen</string>
+    <string name="remove_image">Quitar imagen</string>
+    <string name="save">Guardar</string>
+
+    <!-- Raffle Detail -->
+    <string name="tab_participants">Participantes</string>
+    <string name="tab_numbers">Números</string>
+    <string name="add_participant">Añadir participante</string>
+    <string name="start_draw">Realizar sorteo</string>
+    <string name="view_history">Historial</string>
+    <string name="share_status">Compartir estado</string>
+    <string name="numbers_range">Rango: %1$d – %2$d</string>
+    <string name="assigned_count">%1$d ocupados · %2$d libres</string>
+
+    <!-- Participant -->
+    <string name="add_participant_title">Nuevo participante</string>
+    <string name="edit_participant_title">Editar participante</string>
+    <string name="participant_name">Nombre</string>
+    <string name="participant_name_hint">Ej: Juan García</string>
+    <string name="assign_manual">Manual</string>
+    <string name="assign_auto">Automático</string>
+    <string name="auto_count_label">Números a asignar</string>
+    <string name="assign_randomly">Asignar aleatoriamente</string>
+    <string name="numbers_selected">%1$d números seleccionados</string>
+
+    <!-- Draw -->
+    <string name="draw_title">Sorteo</string>
+    <string name="winners_count_label">Número de ganadores</string>
+    <string name="start_draw_button">¡Sortear!</string>
+    <string name="drawing">Sorteando…</string>
+    <string name="draw_results">Resultado del sorteo</string>
+    <string name="draw_again">Sortear de nuevo</string>
+    <string name="no_assigned_numbers">No hay números asignados para sortear.</string>
+
+    <!-- History -->
+    <string name="history_title">Historial</string>
+    <string name="history_empty">Aún no se ha realizado ningún sorteo.</string>
+    <string name="draw_date">%1$s</string>
+    <string name="winners_label">Ganadores: %1$d</string>
+
+    <!-- Share -->
+    <string name="share_image_title">Estado de la rifa</string>
+    <string name="share_via">Compartir via…</string>
+    <string name="generated_with">Generado con EasyRifa</string>
+
+    <!-- Common -->
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="delete">Eliminar</string>
+    <string name="edit">Editar</string>
+    <string name="back">Atrás</string>
+    <string name="error_name_empty">El nombre no puede estar vacío</string>
+    <string name="error_range_invalid">El máximo debe ser mayor que el mínimo</string>
+    <string name="error_range_too_large">El rango no puede superar 10.000 números</string>
+    <string name="error_number_taken">Ese número ya está asignado</string>
+    <string name="error_not_enough_numbers">No hay suficientes números disponibles</string>
+</resources>
