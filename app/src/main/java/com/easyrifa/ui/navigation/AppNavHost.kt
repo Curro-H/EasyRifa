@@ -66,6 +66,9 @@ fun AppNavHost(navController: NavHostController) {
                 onAddParticipant = {
                     navController.navigate(Screen.AddParticipant.createRoute(raffleId))
                 },
+                onAddParticipantWithNumbers = { numbers ->
+                    navController.navigate(Screen.AddParticipant.createRouteWithNumbers(raffleId, numbers))
+                },
                 onEditParticipant = { participantId ->
                     navController.navigate(Screen.EditParticipant.createRoute(raffleId, participantId))
                 },
@@ -80,7 +83,10 @@ fun AppNavHost(navController: NavHostController) {
 
         composable(
             route = Screen.AddParticipant.ROUTE,
-            arguments = listOf(navArgument("raffleId") { type = NavType.LongType })
+            arguments = listOf(
+                navArgument("raffleId") { type = NavType.LongType },
+                navArgument("preNumbers") { type = NavType.StringType; defaultValue = "" }
+            )
         ) { backStack ->
             val raffleId = backStack.arguments!!.getLong("raffleId")
             AddEditParticipantScreen(

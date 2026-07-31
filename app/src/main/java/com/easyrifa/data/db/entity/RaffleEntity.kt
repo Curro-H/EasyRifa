@@ -10,5 +10,7 @@ data class RaffleEntity(
     val minNumber: Int,
     val maxNumber: Int,
     val imagePath: String? = null,
+    val pricePerNumber: Double? = null,
+    val drawDate: Long? = null,
     val createdAt: Long = System.currentTimeMillis()
 )

@@ -11,7 +11,7 @@ interface RaffleRepository {
     fun getAllRaffles(): Flow<List<RaffleEntity>>
     fun getRaffleById(raffleId: Long): Flow<RaffleEntity?>
     fun getRaffleWithParticipants(raffleId: Long): Flow<RaffleWithParticipants?>
-    suspend fun createRaffle(name: String, min: Int, max: Int, imagePath: String?): Long
+    suspend fun createRaffle(name: String, min: Int, max: Int, imagePath: String?, pricePerNumber: Double?, drawDate: Long?): Long
     suspend fun updateRaffle(raffle: RaffleEntity)
     suspend fun deleteRaffle(raffle: RaffleEntity)
 }
@@ -30,9 +30,9 @@ class RaffleRepositoryImpl @Inject constructor(
     override fun getRaffleWithParticipants(raffleId: Long): Flow<RaffleWithParticipants?> =
         raffleDao.getRaffleWithParticipants(raffleId)
 
-    override suspend fun createRaffle(name: String, min: Int, max: Int, imagePath: String?): Long =
+    override suspend fun createRaffle(name: String, min: Int, max: Int, imagePath: String?, pricePerNumber: Double?, drawDate: Long?): Long =
         raffleDao.insertRaffle(
-            RaffleEntity(name = name, minNumber = min, maxNumber = max, imagePath = imagePath)
+            RaffleEntity(name = name, minNumber = min, maxNumber = max, imagePath = imagePath, pricePerNumber = pricePerNumber, drawDate = drawDate)
         )
 
     override suspend fun updateRaffle(raffle: RaffleEntity) =

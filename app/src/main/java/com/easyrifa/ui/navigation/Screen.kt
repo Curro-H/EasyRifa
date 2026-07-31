@@ -16,8 +16,10 @@ sealed class Screen(val route: String) {
     }
 
     object AddParticipant : Screen("raffle/{raffleId}/participant/add") {
-        const val ROUTE = "raffle/{raffleId}/participant/add"
+        const val ROUTE = "raffle/{raffleId}/participant/add?preNumbers={preNumbers}"
         fun createRoute(raffleId: Long) = "raffle/$raffleId/participant/add"
+        fun createRouteWithNumbers(raffleId: Long, numbers: Set<Int>) =
+            "raffle/$raffleId/participant/add?preNumbers=${numbers.joinToString(",")}"
     }
 
     object EditParticipant : Screen("raffle/{raffleId}/participant/{participantId}/edit") {

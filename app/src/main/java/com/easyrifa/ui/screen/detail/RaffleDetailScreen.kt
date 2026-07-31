@@ -16,7 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.easyrifa.ui.component.NumberGrid
 import com.easyrifa.ui.component.ParticipantCard
-import com.easyrifa.ui.component.ReadOnlyNumberGrid
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +61,7 @@ fun RaffleDetailScreen(
     onBack: () -> Unit,
     onEditRaffle: () -> Unit,
     onAddParticipant: () -> Unit,
+    onAddParticipantWithNumbers: (Set<Int>) -> Unit,
     onEditParticipant: (Long) -> Unit,
     onStartDraw: () -> Unit,
     onHistory: () -> Unit,
@@ -73,6 +74,12 @@ fun RaffleDetailScreen(
     var selectedTab by remember { mutableIntStateOf(0) }
     var participantToDelete by remember { mutableLongStateOf(-1L) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var selectedForAssignment by remember { mutableStateOf(emptySet<Int>()) }
+
+    // Reset selection when leaving the numbers tab
+    LaunchedEffect(selectedTab) {
+        if (selectedTab != 1) selectedForAssignment = emptySet()
+    }
 
     // Launch share chooser when intent is ready
     LaunchedEffect(shareIntent) {
@@ -99,7 +106,7 @@ fun RaffleDetailScreen(
                         Icon(Icons.Default.Share, contentDescription = "Compartir estado")
                     }
                     IconButton(onClick = onHistory) {
-                        Icon(Icons.Default.History, contentDescription = "Historial")
+                        Icon(Icons.Default.DateRange, contentDescription = "Historial")
                     }
                     IconButton(onClick = onEditRaffle) {
                         Icon(Icons.Default.Edit, contentDescription = "Editar sorteo")
@@ -108,8 +115,8 @@ fun RaffleDetailScreen(
             )
         },
         floatingActionButton = {
-            if (selectedTab == 0) {
-                Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (selectedTab == 0) {
                     ExtendedFloatingActionButton(
                         onClick = onStartDraw,
                         icon = { Icon(Icons.Default.Star, contentDescription = null) },
@@ -121,6 +128,13 @@ fun RaffleDetailScreen(
                         text = { Text("Participante") },
                         containerColor = MaterialTheme.colorScheme.secondaryContainer,
                         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                if (selectedTab == 1 && selectedForAssignment.isNotEmpty()) {
+                    ExtendedFloatingActionButton(
+                        onClick = { onAddParticipantWithNumbers(selectedForAssignment) },
+                        icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                        text = { Text("Asignar (${selectedForAssignment.size})") }
                     )
                 }
             }
@@ -212,10 +226,32 @@ fun RaffleDetailScreen(
 
                 1 -> {
                     raffle?.let {
-                        ReadOnlyNumberGrid(
+                        if (selectedForAssignment.isNotEmpty()) {
+                            Text(
+                                text = "${selectedForAssignment.size} número(s) seleccionado(s). Pulsa \"Asignar\" para crear un participante.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                            )
+                        } else {
+                            Text(
+                                text = "Toca un número libre para seleccionarlo.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                            )
+                        }
+                        NumberGrid(
                             minNumber = it.minNumber,
                             maxNumber = it.maxNumber,
-                            assignedNumbers = uiState.assignedNumbers,
+                            selectedNumbers = selectedForAssignment,
+                            takenNumbers = uiState.assignedNumbers,
+                            onNumberToggle = { number ->
+                                selectedForAssignment = if (number in selectedForAssignment)
+                                    selectedForAssignment - number
+                                else
+                                    selectedForAssignment + number
+                            },
                             modifier = Modifier.fillMaxSize()
                         )
                     }

@@ -46,6 +46,13 @@ class AddEditParticipantViewModel @Inject constructor(
     val editParticipantId: Long? = savedStateHandle.get<Long>("participantId")
         ?.takeIf { it > 0 }
 
+    private val preNumbers: Set<Int> = savedStateHandle.get<String>("preNumbers")
+        ?.takeIf { it.isNotBlank() }
+        ?.split(",")
+        ?.mapNotNull { it.trim().toIntOrNull() }
+        ?.toSet()
+        ?: emptySet()
+
     private val _uiState = MutableStateFlow(AddEditParticipantUiState())
     val uiState: StateFlow<AddEditParticipantUiState> = _uiState.asStateFlow()
 
@@ -78,7 +85,8 @@ class AddEditParticipantViewModel @Inject constructor(
                     it.copy(
                         minNumber = min,
                         maxNumber = max,
-                        takenNumbers = allTaken
+                        takenNumbers = allTaken,
+                        selectedNumbers = preNumbers.filter { n -> n !in allTaken }.toSet()
                     )
                 }
             }

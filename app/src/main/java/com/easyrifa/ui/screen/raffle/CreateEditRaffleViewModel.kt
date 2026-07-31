@@ -19,7 +19,9 @@ data class CreateEditRaffleUiState(
     val name: String = "",
     val minNumber: String = "1",
     val maxNumber: String = "100",
+    val pricePerNumber: String = "",
     val imagePath: String? = null,
+    val drawDate: Long? = null,
     val nameError: String? = null,
     val rangeError: String? = null,
     val isSaving: Boolean = false,
@@ -48,7 +50,9 @@ class CreateEditRaffleViewModel @Inject constructor(
                             name = it.name,
                             minNumber = it.minNumber.toString(),
                             maxNumber = it.maxNumber.toString(),
-                            imagePath = it.imagePath
+                            pricePerNumber = it.pricePerNumber?.toString() ?: "",
+                            imagePath = it.imagePath,
+                            drawDate = it.drawDate
                         )
                     }
                 }
@@ -59,6 +63,8 @@ class CreateEditRaffleViewModel @Inject constructor(
     fun onNameChange(value: String) = _uiState.update { it.copy(name = value, nameError = null) }
     fun onMinChange(value: String) = _uiState.update { it.copy(minNumber = value, rangeError = null) }
     fun onMaxChange(value: String) = _uiState.update { it.copy(maxNumber = value, rangeError = null) }
+    fun onPriceChange(value: String) = _uiState.update { it.copy(pricePerNumber = value) }
+    fun onDrawDateChange(value: Long?) = _uiState.update { it.copy(drawDate = value) }
 
     fun onImagePicked(uri: Uri) = viewModelScope.launch {
         // Remove old image file if replacing
@@ -80,6 +86,7 @@ class CreateEditRaffleViewModel @Inject constructor(
         val name = state.name.trim()
         val min = state.minNumber.toIntOrNull()
         val max = state.maxNumber.toIntOrNull()
+        val price = state.pricePerNumber.replace(',', '.').toDoubleOrNull()
 
         var hasError = false
 
@@ -100,12 +107,12 @@ class CreateEditRaffleViewModel @Inject constructor(
         _uiState.update { it.copy(isSaving = true) }
 
         if (editRaffleId == null) {
-            val id = raffleRepository.createRaffle(name, min!!, max!!, state.imagePath)
+            val id = raffleRepository.createRaffle(name, min!!, max!!, state.imagePath, price, state.drawDate)
             _uiState.update { it.copy(isSaving = false, savedRaffleId = id) }
         } else {
             val existing = raffleRepository.getRaffleById(editRaffleId).first()!!
             raffleRepository.updateRaffle(
-                existing.copy(name = name, minNumber = min!!, maxNumber = max!!, imagePath = state.imagePath)
+                existing.copy(name = name, minNumber = min!!, maxNumber = max!!, imagePath = state.imagePath, pricePerNumber = price, drawDate = state.drawDate)
             )
             _uiState.update { it.copy(isSaving = false, savedRaffleId = editRaffleId) }
         }

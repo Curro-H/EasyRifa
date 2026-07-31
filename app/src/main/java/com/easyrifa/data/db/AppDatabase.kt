@@ -2,6 +2,8 @@ package com.easyrifa.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.easyrifa.data.db.dao.AssignedNumberDao
 import com.easyrifa.data.db.dao.DrawResultDao
 import com.easyrifa.data.db.dao.DrawnNumberDao
@@ -21,7 +23,7 @@ import com.easyrifa.data.db.entity.RaffleEntity
         DrawResultEntity::class,
         DrawnNumberEntity::class
     ],
-    version = 1,
+    version = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -33,5 +35,17 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         const val DATABASE_NAME = "easyrifa.db"
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE raffles ADD COLUMN pricePerNumber REAL")
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE raffles ADD COLUMN drawDate INTEGER")
+            }
+        }
     }
 }
